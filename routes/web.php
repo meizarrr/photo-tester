@@ -18,3 +18,15 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+Route::get('/soal', function(){
+	return view('soal');
+});
+
+Route::get('/fotohabis', function(){
+	return view('fotohabis');
+});
+
+Route::get('/tunggujuri', function(){
+	return view('tunggujuri');
+});
