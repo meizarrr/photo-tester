@@ -30,3 +30,11 @@ Route::get('/fotohabis', function(){
 Route::get('/tunggujuri', function(){
 	return view('tunggujuri');
 });
+
+Route::get('/skor', function(){
+	return view('skor');
+});
+
+Route::get('/upload', function(){
+	return view('upload');
+});

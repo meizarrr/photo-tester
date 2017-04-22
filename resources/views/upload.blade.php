@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Canon Photo Contest - TUNGGU JURI</title>
+    <title>Canon Photo Contest - UPLOAD</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -23,7 +23,7 @@
 
 <body>
 
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -41,24 +41,34 @@
         <!-- /.container -->
     </nav>
 
-    <div class="col-sm-6 col-md-4 col-md-offset-4" style="margin-top:80px">
+    <div class="col-lg-4 col-lg-offset-4" style="margin-top:80px">
         <div class="panel panel-red panel-transparent">
             <div class="panel-heading">
-            <strong>Tunggu Juri Lainnya</strong>
+                <strong>SUBMIT</strong>
             </div>
-            <div class="panel-body">
-                <img src="img/index.jpg" class="img-responsive" style="margin-bottom:20px">
-                <h1 class="text-white text-center">TUNGGU JURI LAINNYA</h1>
-                <a href="{{ url('/skor')}}">
-                            <button type="button" class="btn btn-danger btn-circle btn-xl center-block"> > </button>
-                </a>
+            <div class="panel-body" style="margin:0px 10px 10px 10px">
+                <img src="img/index.jpg" class="img-responsive" style="margin-bottom:5px">
+                <h1 class="text-white text-center">SUBMIT</h1>
                 <div class="row" style="margin-bottom:20px">
-                <div class="col-md-6 text-center">
-                    <button type="button" class="btn btn-lg btn-danger">Soal 2</button>
-                </div>
-                <div class="col-md-6 text-center">
-                    <button type="button" class="btn btn-lg btn-danger">Cek Lagi</button>
-                </div>
+                    <form role="form">
+                        <div class="form-group" >
+                            <input class="form-control" placeholder="Nomor Peserta">
+                        </div>
+                        <div class="form group text-white" style="margin-bottom:10px">
+                            <label for="nomor"> Soal 1 </label>
+                                <input type="file" id="nomor">
+                        </div>
+                        <div class="form group text-white" style="margin-bottom:10px">
+                            <label for="nomor"> Soal 2 </label>
+                            <input type="file" id="nomor">
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-lg btn-danger">SUBMIT</button>
+                        </div>
+                        
+                    </form>
+
+
                 </div>
             </div>
         </div>
