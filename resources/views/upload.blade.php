@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Canon Photo Contest - UPLOAD</title>
 
@@ -23,49 +24,89 @@
 
 <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Canon Photo Contest</a>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+
+                    <!-- Collapsed Hamburger -->
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
+                        <span class="sr-only">Toggle Navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <!-- Branding Image -->
+                    <a class="navbar-brand" href="{{ url('/') }}">
+                        {{ config('app.name', 'Laravel') }}
+                    </a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="nav navbar-nav">
+                        &nbsp;
+                    </ul>
+
+                    <!-- Right Side Of Navbar -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="{{ url('/fologout') }}"
+                              onclick="event.preventDefault();
+                              document.getElementById('logout-form').submit();">
+                              Logout
+                            </a>
+                            <form id="logout-form" action="{{ url('/fologout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
+                          </li>
+                    </ul>
+                </div>
             </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
     </nav>
 
-    <div class="col-lg-4 col-lg-offset-4" style="margin-top:80px">
+
+    <div class="col-lg-4 col-lg-offset-4" style="margin-top:60px">
+        
         <div class="panel panel-red panel-transparent">
             <div class="panel-heading">
                 <strong>SUBMIT</strong>
             </div>
-            <div class="panel-body" style="margin:0px 10px 10px 10px">
+            <div class="panel-body" style="margin:0px 10px 0px 10px">
+                
                 <img src="img/index.jpg" class="img-responsive" style="margin-bottom:5px">
                 <h1 class="text-white text-center">SUBMIT</h1>
                 <div class="row" style="margin-bottom:20px">
-                    <form role="form">
+                    <form role="form" method="POST" action="{{ url('/uploading') }}" enctype="multipart/form-data">
+                    {{ csrf_field() }} 
                         <div class="form-group" >
-                            <input class="form-control" placeholder="Nomor Peserta">
+                            <input type="text" name="nomor_peserta" id="nomor_peserta" class="form-control" placeholder="Nomor Peserta">
                         </div>
                         <div class="form group text-white" style="margin-bottom:10px">
-                            <label for="nomor"> Soal 1 </label>
-                                <input type="file" id="nomor">
+                            <label for="foto1"> Soal 1 </label>
+                                <input type="file" id="foto1" name="foto1">
                         </div>
                         <div class="form group text-white" style="margin-bottom:10px">
-                            <label for="nomor"> Soal 2 </label>
-                            <input type="file" id="nomor">
+                            <label for="foto2"> Soal 2 </label>
+                                <input type="file" id="foto2" name="foto2">
                         </div>
-                        <div class="text-center">
-                            <button type="button" class="btn btn-lg btn-danger">SUBMIT</button>
+                        <div class="text-center text-white" style="margin-bottom:5px">
+                            <button type="submit" class="btn btn-lg btn-danger">SUBMIT</button>
                         </div>
-                        
+
+                        @if (count($errors) > 0)
+                            <div class="alert alert-danger alert-custom">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                Submit gagal. Periksa nomor peserta dan file foto.
+                            </div>
+                        @endif
+
+                        @if (session()->has('flash_notification.message'))
+                            <div class="alert alert-{{ session('flash_notification.level') }} alert-custom">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                {!! session('flash_notification.message') !!}
+                            </div>
+                        @endif
                     </form>
 
 

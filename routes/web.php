@@ -38,3 +38,15 @@ Route::get('/skor', function(){
 Route::get('/upload', function(){
 	return view('upload');
 });
+
+Route::group(['middleware' => ['guest']], function () {
+  //ADMIN
+  Route::get('frontdesk', 'AdminLoginController@index');
+  Route::post('foauth', 'AdminLoginController@authenticate');
+});
+
+
+Route::group(['middleware' => ['admin']], function() {
+  Route::post('uploading', 'FotoController@upload');
+  Route::post('fologout', 'AdminLoginController@logout');
+});

@@ -91,3 +91,7 @@ body {
     width: auto;
     max-height: 100px;
 }
+
+.alert-custom{
+  margin-bottom: 0px;
+}

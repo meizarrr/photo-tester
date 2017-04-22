@@ -60,10 +60,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
-                        @if (Auth::guest())
-                            <li><a href="{{ url('/login') }}">Login Juri</a></li>
-                            <li><a href="{{ url('/frontdesk') }}">Login Front Desk</a></li>
-                        @else
+                        <li><a href="{{ url('/') }}">Login Juri</a></li>
                           <li>
                             <a href="{{ url('/logout') }}"
                               onclick="event.preventDefault();
@@ -74,25 +71,58 @@
                                 {{ csrf_field() }}
                             </form>
                           </li>
-                        @endif
                     </ul>
                 </div>
             </div>
         </nav>
 
         
-        <div class="col-sm-6 col-md-4 col-md-offset-4" style="margin-top:80px">
+        <div class="col-sm-6 col-md-4 col-md-offset-4" style="margin-top:40px">
             <div class="panel panel-red panel-transparent">
                 <div class="panel-heading">
-                    <strong> Sign in to continue</strong>
+                    <strong>FRONT DESK LOGIN</strong>
                 </div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/foauth') }}">
                         {{ csrf_field() }}
 
                         <div class="row">
                             <div class="col-sm-12 col-md-10  col-md-offset-1 ">
                                 <img src="img/index.jpg" class="img-responsive" style="margin-bottom:20px">
+                                <h3 class="text-white"> FRONT DESK LOGIN</h3>
+                                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="glyphicon glyphicon-user"></i>
+                                        </span> 
+                                        <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+                                        @if ($errors->has('email'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="glyphicon glyphicon-lock"></i>
+                                        </span>
+                                        <input id="password" type="password" class="form-control" name="password" required>
+
+                                        @if ($errors->has('password'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('password') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-lg btn-danger btn-block" value="Sign in">
+                                </div>
+
                             </div>
                         </div>
                     </form>
