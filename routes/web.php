@@ -31,9 +31,7 @@ Route::get('/tunggujuri', function(){
 	return view('tunggujuri');
 });
 
-Route::get('/skor', function(){
-	return view('skor');
-});
+Route::get('/skor', 'ScoringController@displayScore');
 
 Route::get('/upload', function(){
 	return view('upload');

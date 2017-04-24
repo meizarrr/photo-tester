@@ -12,29 +12,11 @@ class ScoringController extends Controller
 	public function scoring(Request $request)
 	{
 		$nama_juri = Auth::user()->name;
-		$nama_file = $request->nama_file;
-		if($request->nilai != NULL)
-		{
-			$hasNilai = DB::table('penilaian')
-						->where('id_juri', '=', '$nama_juri')
-						->where('id_foto', '=', '$nama_file')
-						->where('soal', '=', 1)
-						->first();
-			if($hasNilai)
-			{
-				DB::table('penilaian')
-					->where('id_juri', '=', '$nama_juri')
-					->where('id_foto', '=', '$nama_file')
+		$query = DB::table('status_juri')
+					->where('name', '=', $nama_juri)
 					->where('soal', '=', 1)
-					->update(['nilai' => $request->nilai]);
-			}
-			else
-			{
-				DB::table('penilaian')->insert(
-    				['id_juri' => $nama_juri, 'id_foto' => $nama_file, 'soal' => 1, 'nilai' => $request->nilai]
-				);
-			}	
-		}
+					->first();
+		$scored = $query->scored_photo;
 
 		$jumlah_foto = DB::table('fotos')
 			->where('soal' , '=' , 1)
@@ -44,6 +26,33 @@ class ScoringController extends Controller
 			->where('name', '=' , $nama_juri)
 			->where('soal', '=', 1)
 			->first();
+
+		
+		$nama_file = $request->nama_file;
+		if($request->nilai != NULL)
+		{
+			
+				DB::table('fotos')
+					->where('nama_file' , '=' , $request->nama_file)
+					->where('soal' , '=' , 1)
+					->update([$nama_juri => $request->nilai]
+				);
+				
+				$scored = $scored + 1;
+				if($scored == $jumlah_foto)
+				{
+					return $this->displayScore();
+				}
+
+				DB::table('status_juri')
+					->where('name', '=', $nama_juri)
+					->where('soal', '=', 1)
+					->update(['scored_photo' => $scored]
+				);
+
+		}
+
+		
 
 		if($request->clickedbutton == 'previous')
 		{
@@ -141,14 +150,16 @@ class ScoringController extends Controller
 		}
 	}
 
-	public function next(Request $request)
+	public function displayScore()
 	{
 
+		$hasil = DB::table('fotos')
+			->select(DB::raw("nama_file, (juri1 + juri2 + juri3) as total"))
+			->where('soal', '=', 1)
+			->orderBy('total', 'desc')
+			->get();
 
-	}
-
-	public function previous(Request $request)
-	{	
-
+		return view('skor')
+			->with('data', $hasil);
 	}
 }

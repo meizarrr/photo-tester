@@ -35,31 +35,13 @@
           </tr>  
         </thead>
         <tbody>
-            <tr>
-                <th> <img src="img/1.jpg" class="img-thumbnail img-tabel"> </th>
-                <th> 201-1.jpg </th>
-                <th> 50 </th>
-            </tr>
-            <tr>
-                <th> <img src="img/b.jpg" class="img-thumbnail img-tabel"> </th>
-                <th> 201-1.jpg </th>
-                <th> 50 </th>
-            </tr>
-            <tr>
-                <th> <img src="img/d.jpg" class="img-thumbnail img-tabel"> </th>
-                <th> 201-1.jpg </th>
-                <th> 50 </th>
-            </tr>
-            <tr>
-                <th> <img src="img/1.jpg" class="img-thumbnail img-tabel"> </th>
-                <th> 201-1.jpg </th>
-                <th> 50 </th>
-            </tr>
-            <tr>
-                <th> <img src="img/b.jpg" class="img-thumbnail img-tabel"> </th>
-                <th> 201-1.jpg </th>
-                <th> 50 </th>
-            </tr>
+            @foreach($data as $item)
+                <tr>
+                    <th> <img src="soal1/{{$item->nama_file}}" class="img-thumbnail img-tabel"> </th>
+                    <th> {{$item->nama_file}} </th>
+                    <th> {{$item->total}} </th>
+                </tr>
+            @endforeach
         </tbody>
 </table>
 </div>
