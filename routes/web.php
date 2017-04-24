@@ -50,3 +50,5 @@ Route::group(['middleware' => ['admin']], function() {
   Route::post('uploading', 'FotoController@upload');
   Route::post('fologout', 'AdminLoginController@logout');
 });
+
+Route::post('scoring', 'ScoringController@scoring');

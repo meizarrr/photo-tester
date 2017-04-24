@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Canon Photo Contest - SOAL</title>
 
@@ -29,28 +30,26 @@
             </div>
             <div class="panel-body">
                 <form role="form" method="POST" action="{{ url('/scoring') }}">
+                {{ csrf_field() }} 
                     <p class="text-white text-2x text-right"> {{$counter}}/{{$max}} </p>
                     <div class="row vertical-align">
                         <div class="col-lg-1">
-
-                            <a href="{{ url('/previous')}}">
-                                <button type="button" class="btn btn-danger btn-circle btn-xl center-block">
-                                    <i class="fa fa-caret-left fa-lg"></i>
-                                </button>
-                            </a>
+                        <!-- previous -->
+                        <button type="submit" class="btn btn-danger btn-circle btn-xl center-block" name="clickedbutton" id="previous" value="previous">
+                                <span class="fa fa-caret-left fa-lg"></span>
+                        </button>
 
                         </div>
                         <div class="col-lg-10 text-center">
+                            <input type="hidden" name="nama_file" value="{{$source->nama_file}}" id="{{$source->nama_file}}">
                             <img class="img-soal img-responsive center-block" src="soal1/{{$source->nama_file}}">
                         </div>
                         
                         <!-- next -->
                         <div class="col-lg-1 text-right">
-                            <a href="{{ url('/next')}}">
-                                <button type="button" class="btn btn-danger btn-circle btn-xl center-block">
-                                    <i class="fa fa-caret-right fa-lg"></i>
+                                <button type="submit" class="btn btn-danger btn-circle btn-xl center-block" name="clickedbutton" id="next" value="next">
+                                    <span class="fa fa-caret-right fa-lg"></span>
                                 </button>
-                            </a>
                         </div>
                     </div>
 
@@ -58,19 +57,19 @@
                         <div class="form-group">
                             <label>Nilai : </label>
                             <label class="radio-inline">
-                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1">1
+                                <input type="radio" name="nilai" id="nilai1" value="1">1
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2">2
+                                <input type="radio" name="nilai" id="nilai2" value="2">2
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline3" value="option3">3
+                                <input type="radio" name="nilai" id="nilai3" value="3">3
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline3" value="option3">4
+                                <input type="radio" name="nilai" id="nilai4" value="4">4
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline3" value="option3">5
+                                <input type="radio" name="nilai" id="nilai5" value="5">5
                             </label>
                         </div>
                     </div>
