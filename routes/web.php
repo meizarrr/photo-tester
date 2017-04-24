@@ -19,9 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
-Route::get('/soal', function(){
-	return view('soal');
-});
+Route::get('/soal', 'DisplayController@display');
+Route::get('/next', 'DisplayController@next');
+Route::get('/previous', 'DisplayController@previous');
 
 Route::get('/fotohabis', function(){
 	return view('fotohabis');

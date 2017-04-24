@@ -30,7 +30,6 @@ class FrontDeskController extends Controller
 
     if (auth()->guard('frontdesk')->attempt(['email' => $email, 'password' => $password ]))
     {
-      flash('Welcome Aboard!');
       return redirect()->intended('upload');
     }
     else
