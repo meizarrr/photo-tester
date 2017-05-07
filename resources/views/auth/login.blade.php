@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Canon Photo Contest - Login</title>
+    <title>Login Juri</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -47,7 +47,7 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                        Canon Photo Marathon 2017
                     </a>
                 </div>
 
@@ -61,7 +61,8 @@
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li><a href="{{ url('/login') }}">Login</a></li>
+                            <li><a href="{{ url('/login') }}">Login Juri</a></li>
+                            <li><a href="{{ url('/frontdesk') }}">Login Front Desk</a></li>
                         @else
                           <li>
                             <a href="{{ url('/logout') }}"
@@ -80,7 +81,7 @@
         </nav>
 
         
-        <div class="col-sm-6 col-md-4 col-md-offset-4" style="margin-top:80px">
+        <div class="col-sm-6 col-md-4 col-md-offset-4" style="margin-top:40px">
             <div class="panel panel-red panel-transparent">
                 <div class="panel-heading">
                     <strong> Sign in to continue</strong>
@@ -92,6 +93,7 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-10  col-md-offset-1 ">
                                 <img src="img/index.jpg" class="img-responsive" style="margin-bottom:20px">
+                                <h3 class="text-white text-center">LOGIN JURI</h3>
                                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                     <div class="input-group">
                                         <span class="input-group-addon">

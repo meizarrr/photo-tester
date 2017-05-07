@@ -52,7 +52,7 @@ body {
 
 .img-soal{
     width: auto;
-    max-height: calc(100vh - 150px);
+    max-height: calc(100vh - 120px);
 }
 
 .btn-circle {
@@ -94,4 +94,9 @@ body {
 
 .alert-custom{
   margin-bottom: 0px;
+}
+
+.pull-bottom{
+  position: absolute;
+  bottom: 0px;
 }

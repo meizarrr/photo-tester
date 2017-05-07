@@ -25,53 +25,44 @@
 <body>
     <div class="col-lg-12">
         <div class="panel panel-red panel-transparent panel-full">
-            <div class="panel-heading">
-                <strong> Soal 1 </strong>
+            <div class="panel-heading text-150">
+                <div class="row">
+                    <div class="col-md-4 text-left panel-title">Soal 1</div>
+                    <div class="col-md-8 text-right">{{$counter}}/{{$max}} </div>
+                </div>
             </div>
             <div class="panel-body">
-                <form role="form" method="POST" action="{{ url('/scoring') }}">
+                <form role="form" method="POST" action="{{ url('/scoring') }}" class="form-horizontal">
                 {{ csrf_field() }} 
-                    <p class="text-white text-2x text-right"> {{$counter}}/{{$max}} </p>
-                    <div class="row vertical-align">
-                        <div class="col-lg-1">
-                        <!-- previous -->
-                        <button type="submit" class="btn btn-danger btn-circle btn-xl center-block" name="clickedbutton" id="previous" value="previous">
-                                <span class="fa fa-caret-left fa-lg"></span>
-                        </button>
 
+                    <div class="row vertical-align">
+                        <!-- previous -->
+                        <div class="col-lg-1">
+                            <button type="submit" name="clickedbutton" id="next" value="next" style="visibility: hidden">     
+                            <button type="submit" class="btn btn-danger btn-circle btn-xl center-block" name="clickedbutton" id="previous" value="previous">
+                                    <span class="fa fa-caret-left fa-lg"></span>
+                            </button>
                         </div>
+                        <!-- image display -->
                         <div class="col-lg-10 text-center">
                             <input type="hidden" name="nama_file" value="{{$source->nama_file}}" id="{{$source->nama_file}}">
-                            <img class="img-soal img-responsive center-block" src="soal1/{{$source->nama_file}}">
+                            <img class="img-soal img-responsive center-block" src="{{$kategori}}/soal{{$soal}}/{{$source->nama_file}}">
                         </div>
                         
                         <!-- next -->
                         <div class="col-lg-1 text-right">
+                                <button style="visibility: hidden">
                                 <button type="submit" class="btn btn-danger btn-circle btn-xl center-block" name="clickedbutton" id="next" value="next">
                                     <span class="fa fa-caret-right fa-lg"></span>
                                 </button>
                         </div>
                     </div>
 
-                    <div class="row text-center text-white text-150">
-                        <div class="form-group">
-                            <label>Nilai : </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="nilai" id="nilai1" value="1">1
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="nilai" id="nilai2" value="2">2
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="nilai" id="nilai3" value="3">3
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="nilai" id="nilai4" value="4">4
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="nilai" id="nilai5" value="5">5
-                            </label>
-                        </div>
+                    <div class="row text-center text-white text-150" style="margin-top: 5px">
+                                <label class="control-label col-sm-1 col-sm-offset-5" for="nilai">Nilai : </label>
+                                <div class="col-sm-1">
+                                    <input class="form-control" type="number" name="nilai" id="nilai" min="1" max="10" step="1" value="" autofocus>
+                                </div>
                     </div>
                 </form>   
             </div>

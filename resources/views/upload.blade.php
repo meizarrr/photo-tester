@@ -11,7 +11,7 @@
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Canon Photo Contest - UPLOAD</title>
+    <title>Upload</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -38,7 +38,7 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                        Canon Photo Marathon 2017
                     </a>
                 </div>
 
@@ -75,12 +75,19 @@
             <div class="panel-body" style="margin:0px 10px 0px 10px">
                 
                 <img src="img/index.jpg" class="img-responsive" style="margin-bottom:5px">
-                <h1 class="text-white text-center">SUBMIT</h1>
                 <div class="row" style="margin-bottom:20px">
                     <form role="form" method="POST" action="{{ url('/uploading') }}" enctype="multipart/form-data">
                     {{ csrf_field() }} 
                         <div class="form-group" >
+                            <label for="nomor_peserta" class="text-white">Nomor Peserta</label>
                             <input type="text" name="nomor_peserta" id="nomor_peserta" class="form-control" placeholder="Nomor Peserta">
+                        </div>
+                        <div class="form-group">
+                                <label class="text-white">Kategori</label>
+                                <select class="form-control" name="kategori" id="kategori">
+                                    <option value="Pelajar">Pelajar / Mahasiswa</option>
+                                    <option id="Umum" value="Umum">Umum</option>
+                                </select>
                         </div>
                         <div class="form group text-white" style="margin-bottom:10px">
                             <label for="foto1"> Soal 1 </label>

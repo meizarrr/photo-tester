@@ -14,6 +14,7 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="css/full.css" rel="stylesheet">
@@ -33,10 +34,35 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Canon Photo Contest</a>
+                <a class="navbar-brand" href="#">Canon Photo Marathon 2017</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <!-- /.navbar-collapse -->
+            <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="nav navbar-nav">
+                        &nbsp;
+                    </ul>
+
+                    <!-- Right Side Of Navbar -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <!-- Authentication Links -->
+                        @if (Auth::guest())
+                            <li><a href="{{ url('/login') }}">Login</a></li>
+                        @else
+                          <li>
+                            <a href="{{ url('/logout') }}"
+                              onclick="event.preventDefault();
+                              document.getElementById('logout-form').submit();">
+                              Logout
+                            </a>
+                            <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
+                          </li>
+                        @endif
+                    </ul>
+                </div>
         </div>
         <!-- /.container -->
     </nav>
@@ -50,14 +76,20 @@
                 <img src="img/index.jpg" class="img-responsive" style="margin-bottom:20px">
                 <h1 class="text-white text-center">TUNGGU JURI LAINNYA</h1>
                 <a href="{{ url('/skor')}}">
-                            <button type="button" class="btn btn-danger btn-circle btn-xl center-block"> > </button>
+                            <button type="button" class="btn btn-danger btn-circle btn-xl center-block">
+                                <span class="fa fa-refresh fa-lg"></span>
+                            </button>
                 </a>
                 <div class="row" style="margin-bottom:20px">
                 <div class="col-md-6 text-center">
+                <a href="{{ url('/soalb')}}">
                     <button type="button" class="btn btn-lg btn-danger">Soal 2</button>
+                </a>
                 </div>
                 <div class="col-md-6 text-center">
+                <a href="{{ url('/soal')}}">
                     <button type="button" class="btn btn-lg btn-danger">Cek Lagi</button>
+                </a>
                 </div>
                 </div>
             </div>

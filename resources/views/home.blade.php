@@ -38,6 +38,24 @@
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <!-- /.navbar-collapse -->
+            <ul class="nav navbar-nav navbar-right">
+                        <!-- Authentication Links -->
+                        @if (Auth::guest())
+                            <li><a href="{{ url('/login') }}">Login Juri</a></li>
+                            <li><a href="{{ url('/frontdesk') }}">Login Front Desk</a></li>
+                        @else
+                          <li>
+                            <a href="{{ url('/logout') }}"
+                              onclick="event.preventDefault();
+                              document.getElementById('logout-form').submit();">
+                              Logout
+                            </a>
+                            <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
+                          </li>
+                        @endif
+                    </ul>
         </div>
         <!-- /.container -->
     </nav>
@@ -48,16 +66,29 @@
             <strong> Pilih Soal </strong>
             </div>
             <div class="panel-body">
-                <img src="img/index.jpg" class="img-responsive" style="margin-bottom:20px">
-                
-                <div class="col-md-6 text-center">
-                <a href="{{ url('/soal')}}">
-                    <button type="button" class="btn btn-lg btn-danger">Soal 1</button>
-                    </a>
-                </div>
-                <div class="col-md-6 text-center">
-                    <button type="button" class="btn btn-lg btn-danger">Soal 2</button>
-                </div>
+                <form role="form" method="POST" action="{{ url('/pembagian') }}">
+                    {{ csrf_field() }}
+                    <img src="img/index.jpg" class="img-responsive" style="margin-bottom:20px">
+                    <div class="form-group">
+                        <label class="text-white">Kategori</label>
+                        <select class="form-control" name="kategori" id="kategori">
+                            <option value="Pelajar">Pelajar / Mahasiswa</option>
+                            <option id="Umum" value="Umum">Umum</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <button type="submit" class="btn btn-lg btn-danger" name="soal" id="1" value="1">Soal 1</button>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <button type="submit" class="btn btn-lg btn-danger" name="soal" id="2" value="2">Soal 2</button>
+                    </div>
+                </form>
+                @if (session()->has('flash_notification.message'))
+                    <div class="alert alert-{{ session('flash_notification.level') }} alert-custom">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {!! session('flash_notification.message') !!}
+                    </div>
+                @endif
             </div>
         </div>
     </div>
