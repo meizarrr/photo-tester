@@ -14,43 +14,33 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Admin::create([
-	        'name' => "frontdesk",
-	        'email' => "fo@test.com",
-	        'password' => bcrypt("fo")
-      	]);
 
         DB::table('users')->insert([
                 [
-                    'name' => 'juri1',
-                    'email' => 'juri1@test.com',
-                    'password' => bcrypt('juri1')
+                    'name' => 'juri4',
+                    'email' => 'juri4@test.com',
+                    'password' => bcrypt('juri4')
                 ],
                 [
-                    'name' => 'juri2',
-                    'email' => 'juri2@test.com',
-                    'password' => bcrypt('juri2')
+                    'name' => 'juri5',
+                    'email' => 'juri5@test.com',
+                    'password' => bcrypt('juri5')
                 ],
                 [
-                    'name' => 'juri3',
-                    'email' => 'juri3@test.com',
-                    'password' => bcrypt('juri3')
-                ]
-        ]);
-
-        DB::table('pesertas')->insert([
-                [
-                    'name' => 'peserta1',
-                    'nomor_peserta' => '11111'
+                    'name' => 'juri6',
+                    'email' => 'juri6@test.com',
+                    'password' => bcrypt('juri6')
                 ],
                 [
-                    'name' => 'peserta2',
-                    'nomor_peserta' => '22222'
+                    'name' => 'juri7',
+                    'email' => 'juri7@test.com',
+                    'password' => bcrypt('juri7')
                 ],
                 [
-                    'name' => 'peserta3',
-                    'nomor_peserta' => '33333'
-                ]
+                    'name' => 'juri8',
+                    'email' => 'juri8@test.com',
+                    'password' => bcrypt('juri8')
+                ],
         ]);
     }
 }

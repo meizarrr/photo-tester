@@ -70,27 +70,23 @@
     <div class="col-sm-6 col-md-4 col-md-offset-4" style="margin-top:80px">
         <div class="panel panel-red panel-transparent">
             <div class="panel-heading">
-            <strong>Tunggu Juri Lainnya</strong>
+            <strong>Foto Habis</strong>
             </div>
             <div class="panel-body">
                 <img src="img/index.jpg" class="img-responsive" style="margin-bottom:20px">
                 <h1 class="text-white text-center">TUNGGU JURI LAINNYA</h1>
-                <a href="{{ url('/skor')}}">
-                            <button type="button" class="btn btn-danger btn-circle btn-xl center-block">
-                                <span class="fa fa-refresh fa-lg"></span>
-                            </button>
-                </a>
+                
                 <div class="row" style="margin-bottom:20px">
-                <div class="col-md-6 text-center">
-                <a href="{{ url('/soalb')}}">
-                    <button type="button" class="btn btn-lg btn-danger">Soal 2</button>
-                </a>
-                </div>
-                <div class="col-md-6 text-center">
-                <a href="{{ url('/soal')}}">
-                    <button type="button" class="btn btn-lg btn-danger">Cek Lagi</button>
-                </a>
-                </div>
+                    <div class="col-md-6 text-center">
+                        <a href="{{ url('/skor')}}">
+                            <button type="button" class="btn btn-lg btn-danger">Refresh</button>
+                        </a>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <a href="{{ url('/soal')}}">
+                            <button type="button" class="btn btn-lg btn-danger">Cek Lagi</button>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

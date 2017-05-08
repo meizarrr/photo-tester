@@ -99,12 +99,7 @@
                                         <span class="input-group-addon">
                                             <i class="glyphicon glyphicon-user"></i>
                                         </span> 
-                                        <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-                                        @if ($errors->has('email'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('email') }}</strong>
-                                        </span>
-                                        @endif
+                                        <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>  
                                     </div>
                                 </div>
 
@@ -115,12 +110,13 @@
                                         </span>
                                         <input id="password" type="password" class="form-control" name="password" required>
 
-                                        @if ($errors->has('password'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('password') }}</strong>
+                                        
+                                    </div>
+                                    @if ($errors->has('email'))
+                                        <span class="help-block text-white">
+                                            <strong class="text-white">{{ $errors->first('email') }}</strong>
                                         </span>
                                         @endif
-                                    </div>
                                 </div>
 
                                 <div class="form-group">

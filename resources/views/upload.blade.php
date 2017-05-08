@@ -85,8 +85,8 @@
                         <div class="form-group">
                                 <label class="text-white">Kategori</label>
                                 <select class="form-control" name="kategori" id="kategori">
-                                    <option value="Pelajar">Pelajar / Mahasiswa</option>
-                                    <option id="Umum" value="Umum">Umum</option>
+                                    <option value="Pelajar">Pelajar</option>
+                                    <option id="Umum" value="Mahasiswa">Mahasiswa</option>
                                 </select>
                         </div>
                         <div class="form group text-white" style="margin-bottom:10px">

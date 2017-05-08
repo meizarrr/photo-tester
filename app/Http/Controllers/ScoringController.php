@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use Auth;
 use App\Foto;
+use Redirect;
 
 class ScoringController extends Controller
 {
@@ -16,25 +17,57 @@ class ScoringController extends Controller
 		$soal = Auth::user()->soal;
 		$skiped = Auth::user()->skiped;
 		$scored = Auth::user()->scored_photo;
+		$status = Auth::user()->status;
 
 		$jumlah_foto = DB::table('fotos')
 			->where('kategori' , '=', $kategori)
             ->where('soal' , '=' , $soal)
             ->count();
 
-        $display = DB::table('fotos')
-        	->where('kategori' , '=', $kategori)
-            ->where('soal' , '=', $soal)
-            ->where($nama_juri, '=' , 0)
-            ->orderBy('id')
-            ->skip($skiped)
-            ->first();
-		return view('soal')
-			->with('kategori', $kategori)
-			->with('soal', $soal)
-            ->with('counter', $skiped+$scored+1)
-            ->with('max', $jumlah_foto)
-            ->with('source', $display);
+        if($status == "UNFINISHED")
+        {
+	        if($skiped >= ($jumlah_foto-$scored))
+			{
+				$skiped = 0;
+			}
+        	$display = DB::table('fotos')
+	        	->where('kategori' , '=', $kategori)
+	            ->where('soal' , '=', $soal)
+	            ->where($nama_juri, '=' , 0)
+	            ->orderBy('id')
+	            ->skip($skiped)
+	            ->first();
+	        return view('soal')
+				->with('kategori', $kategori)
+				->with('soal', $soal)
+				->with('score', $display->$nama_juri)
+	            ->with('counter', $scored)
+	            ->with('max', $jumlah_foto)
+	            ->with('status', $status)
+	            ->with('source', $display);
+        }
+        elseif($status == "FINISHED")
+        {
+        	if($skiped >= ($jumlah_foto-$scored))
+			{
+				$skiped = 0;
+			}
+        	$display = DB::table('fotos')
+	        	->where('kategori' , '=', $kategori)
+	            ->where('soal' , '=', $soal)
+	            ->orderBy('id')
+	            ->skip($skiped)
+	            ->first();
+	        return view('soal')
+				->with('kategori', $kategori)
+				->with('soal', $soal)
+				->with('score', $display->$nama_juri)
+	            ->with('counter', $skiped+1)
+	            ->with('max', $jumlah_foto)
+	            ->with('status', $status)
+	            ->with('source', $display);
+        }
+		
 	}
 
 	public function scoring(Request $request)
@@ -44,80 +77,125 @@ class ScoringController extends Controller
 		$soal = Auth::user()->soal;
 		$skiped = Auth::user()->skiped;
 		$scored = Auth::user()->scored_photo;
+		$status = Auth::user()->status;
 		$jumlah_foto = DB::table('fotos')
 			->where('kategori' ,'=', $kategori)
 			->where('soal' , '=' , $soal)
 			->count();
 
-		if($request->clickedbutton == "next")
+		if($status == "UNFINISHED")
 		{
-			if($request->nilai != NULL)
+			//next
+			if($request->clickedbutton == "next")
 			{
-				DB::table('fotos')
-					->where('nama_file' , '=' , $request->nama_file)
-					->where('kategori' ,'=', $kategori)
-					->where('soal' , '=' , $soal)
-					->update([$nama_juri => $request->nilai]
-				);
-				
-				$scored = $scored + 1;
-				DB::table('users')
-					->where('name', '=', $nama_juri)
-					->where('kategori' ,'=', $kategori)
-					->where('soal' , '=' , $soal)
-					->update(['scored_photo' => $scored]
-				);
-			}
-			else
-			{
-				$skiped = $skiped + 1;
+				//if ada nilai
+				if($request->nilai != NULL)
+				{
+					DB::table('fotos')
+						->where('nama_file' , '=' , $request->nama_file)
+						->where('kategori' ,'=', $kategori)
+						->where('soal' , '=' , $soal)
+						->update([$nama_juri => $request->nilai]
+					);
+
+					$scored = $scored + 1;
+					DB::table('users')
+						->where('name', '=', $nama_juri)
+						->where('kategori' ,'=', $kategori)
+						->where('soal' , '=' , $soal)
+						->update(['scored_photo' => $scored]
+					);
+					if($scored == $jumlah_foto)
+					{
+						$status = "FINISHED";
+						DB::table('users')
+							->where('name', '=', $nama_juri)
+							->where('kategori' ,'=', $kategori)
+							->where('soal' , '=' , $soal)
+							->update([
+								'status' => $status,
+								'skiped' => 0
+						]);
+						return $this->displayScore();
+					}	
+				}
+
+				//if skip dulu
+				else
+				{
+					$skiped = $skiped + 1;
+					if($skiped >= ($jumlah_foto-$scored))
+					{
+						$skiped = 0;
+					}
+					DB::table('users')
+						->where('name', '=', $nama_juri)
+						->where('kategori' ,'=', $kategori)
+						->where('soal' , '=' , $soal)
+						->update(['skiped' => $skiped]
+					);
+					
+				}
+
+				//display
 				if($skiped >= ($jumlah_foto-$scored))
 				{
 					$skiped = 0;
 				}
-				DB::table('users')
-					->where('name', '=', $nama_juri)
-					->where('kategori' ,'=', $kategori)
-					->where('soal' , '=' , $soal)
-					->update(['skiped' => $skiped]
-				);
+				$display = DB::table('fotos')
+			        	->where('kategori' , '=', $kategori)
+			            ->where('soal' , '=', $soal)
+			            ->where($nama_juri, '=' , 0)
+			            ->orderBy('id')
+			            ->skip($skiped)
+			            ->first();
+						
+				return view('soal')
+					->with('kategori', $kategori)
+					->with('soal', $soal)
+					->with('score', $display->$nama_juri)
+		            ->with('counter', $scored)
+		            ->with('max', $jumlah_foto)
+		            ->with('status', $status)
+		            ->with('source', $display);
+				
 			}
 
-			$display = DB::table('fotos')
-	        	->where('kategori' , '=', $kategori)
-	            ->where('soal' , '=', $soal)
-	            ->where($nama_juri, '=' , 0)
-	            ->orderBy('id')
-	            ->skip($skiped)
-	            ->first();
-			return view('soal')
-				->with('kategori', $kategori)
-				->with('soal', $soal)
-	            ->with('counter', $skiped+$scored+1)
-	            ->with('max', $jumlah_foto)
-	            ->with('source', $display);
-		}
-		if($request->clickedbutton == "previous")
-		{
-			if($request->nilai != NULL)
+			//previous
+			if($request->clickedbutton == "previous")
 			{
-				DB::table('fotos')
-					->where('nama_file' , '=' , $request->nama_file)
-					->where('kategori' ,'=', $kategori)
-					->where('soal' , '=' , $soal)
-					->update([$nama_juri => $request->nilai]
-				);
-				
-				$scored = $scored + 1;
-				DB::table('users')
-					->where('name', '=', $nama_juri)
-					->where('kategori' ,'=', $kategori)
-					->where('soal' , '=' , $soal)
-					->update(['scored_photo' => $scored]
-				);
-			}
-			else
-			{
+
+				//if ada nilainya
+				if($request->nilai != NULL)
+				{
+					
+					DB::table('fotos')
+						->where('nama_file' , '=' , $request->nama_file)
+						->where('kategori' ,'=', $kategori)
+						->where('soal' , '=' , $soal)
+						->update([$nama_juri => $request->nilai]
+					);
+					$scored = $scored + 1;
+					DB::table('users')
+						->where('name', '=', $nama_juri)
+						->where('kategori' ,'=', $kategori)
+						->where('soal' , '=' , $soal)
+						->update(['scored_photo' => $scored]
+					);
+					if($scored == $jumlah_foto)
+					{
+						$status = "FINISHED";
+						DB::table('users')
+							->where('name', '=', $nama_juri)
+							->where('kategori' ,'=', $kategori)
+							->where('soal' , '=' , $soal)
+							->update([
+								'status' => $status,
+								'skiped' => 0
+						]);
+						return $this->displayScore();
+					}		
+				}
 				if($skiped == 0)
 				{
 					$skiped = ($jumlah_foto - $scored -1);
@@ -126,12 +204,14 @@ class ScoringController extends Controller
 				{
 					$skiped = $skiped-1;
 				}
+
 				DB::table('users')
 					->where('name', '=', $nama_juri)
 					->where('kategori' ,'=', $kategori)
 					->where('soal' , '=' , $soal)
 					->update(['skiped' => $skiped]
 				);
+				//display
 				$display = DB::table('fotos')
 		        	->where('kategori' , '=', $kategori)
 		            ->where('soal' , '=', $soal)
@@ -139,176 +219,98 @@ class ScoringController extends Controller
 		            ->orderBy('id')
 		            ->skip($skiped)
 		            ->first();
+				
 				return view('soal')
 					->with('kategori', $kategori)
 					->with('soal', $soal)
-		            ->with('counter', $skiped+$scored+1)
+					->with('score', $display->$nama_juri)
+		            ->with('counter', $scored)
 		            ->with('max', $jumlah_foto)
-		            ->with('source', $display);
-			}	
+		            ->with('status', $status)
+		            ->with('source', $display);	
+			}
 		}
-	}
 
-	/*public function scoring(Request $request)
-	{
-		$nama_juri = Auth::user()->name;
-		$query = DB::table('status_juri')
-					->where('name', '=', $nama_juri)
-					->where('soal', '=', 1)
-					->first();
-		$scored = $query->scored_photo;
-
-		$jumlah_foto = DB::table('fotos')
-			->where('soal' , '=' , 1)
-			->count();
-			
-		$status = DB::table('status_juri')
-			->where('name', '=' , $nama_juri)
-			->where('soal', '=', 1)
-			->first();
-
-		
-		$nama_file = $request->nama_file;
-		if($request->nilai != NULL)
+		if($status == "FINISHED")
 		{
-			
+			if($request->nilai != NULL)
+			{
 				DB::table('fotos')
 					->where('nama_file' , '=' , $request->nama_file)
-					->where('soal' , '=' , 1)
+					->where('kategori' ,'=', $kategori)
+					->where('soal' , '=' , $soal)
 					->update([$nama_juri => $request->nilai]
 				);
-				
-				$scored = $scored + 1;
-				DB::table('status_juri')
-					->where('name', '=', $nama_juri)
-					->where('soal', '=', 1)
-					->update(['scored_photo' => $scored]
-				);
-				if($scored >= $jumlah_foto)
+			}
+
+			if($request->clickedbutton == "next")
+			{
+				$skiped = $skiped+1;
+				if($skiped >= $jumlah_foto)
 				{
-					return $this->displayScore();
+					$skiped = 0;
 				}
+			}
+			elseif($request->clickedbutton == "previous")
+			{
+				if($skiped == 0)
+				{
+					$skiped = $jumlah_foto-1;
+				}
+				else
+				{
+					$skiped = $skiped-1;
+				}
+			}
+
+			DB::table('users')
+				->where('name', '=', $nama_juri)
+				->where('kategori' ,'=', $kategori)
+				->where('soal' , '=' , $soal)
+				->update(['skiped' => $skiped]
+			);
+			$display = DB::table('fotos')
+	        	->where('kategori' , '=', $kategori)
+	            ->where('soal' , '=', $soal)
+	            ->orderBy('id')
+	            ->skip($skiped)
+	            ->first();
+				
+			return view('soal')
+				->with('kategori', $kategori)
+				->with('soal', $soal)
+				->with('score', $display->$nama_juri)
+	            ->with('counter', $skiped+1)
+	            ->with('max', $jumlah_foto)
+	            ->with('status', $status)
+	            ->with('source', $display);
 		}
-
-		if($request->clickedbutton == 'previous')
-		{
-			
-			if($status->last_photo == 1)
-			{
-				$previous_photo = DB::table('fotos')
-					->where('soal', '=' , 1)
-					->orderBy('id')
-					->offset($jumlah_foto-1)
-					->select('nama_file')
-					->first();
-
-				DB::table('status_juri')
-					->where('name' , '=' , $nama_juri)
-					->where('soal', '=', 1)
-					->update(['last_photo' => $jumlah_foto]);
-
-				return view('soal' )
-				->with('counter', $jumlah_foto)
-				->with('max', $jumlah_foto)
-				->with('source', $previous_photo);
-			}
-			else
-			{
-				$previous_photo = DB::table('fotos')
-					->where('soal', '=' , 1)
-					->orderBy('id')
-					->offset($status->last_photo-2)
-					->select('nama_file')
-					->first();
-
-				DB::table('status_juri')
-					->where('name' , '=' , $nama_juri)
-					->where('soal', '=', 1)
-					->update(['last_photo' => $status->last_photo-1]);
-
-				return view('soal' )
-					->with('counter', $status->last_photo-1)
-					->with('max', $jumlah_foto)
-					->with('source', $previous_photo);
-			}
-			
-		}
-
-		elseif($request->clickedbutton == 'next')
-		{
-			$jumlah_foto = DB::table('fotos')
-			->where('soal' , '=' , 1)
-			->count();
-			$nama_juri = Auth::user()->name;
-			$status = DB::table('status_juri')
-			->where('name', '=' , $nama_juri)
-			->first();
-
-			if ($status->last_photo == $jumlah_foto)
-			{
-				$next_photo = DB::table('fotos')
-					->where('soal', '=' , 1)
-					->orderBy('id')
-					->offset(0)
-					->select('nama_file')
-					->first();
-
-				DB::table('status_juri')
-					->where('name' , '=' , $nama_juri)
-					->where('soal', '=', 1)
-					->update(['last_photo' => 1]);
-
-				return view('soal')
-				->with('counter', 1)
-				->with('max', $jumlah_foto)
-				->with('source', $next_photo);
-			}
-
-			else
-			{
-				$next_photo = DB::table('fotos')
-					->where('soal', '=' , 1)
-					->orderBy('id')
-					->offset($status->last_photo)
-					->select('nama_file')
-					->first();
-
-				DB::table('status_juri')
-					->where('name' , '=' , $nama_juri)
-					->where('soal', '=', 1)
-					->update(['last_photo' => $status->last_photo+1]);
-
-				return view('soal' )
-					->with('counter', $status->last_photo+1)
-					->with('max', $jumlah_foto)
-					->with('source', $next_photo);
-			}
-		}
-	}*/
+		
+	}
 
 	public function displayScore()
 	{
-		$jumlah_foto = DB::table('fotos')
-			->where('soal' , '=' , 1)
+
+		$kategori = Auth::user()->kategori;
+		$soal = Auth::user()->soal;
+		$finished_juri = DB::table('users')
+			->where('kategori', '=', $kategori)
+			->where('soal', '=' , $soal)
+			->where('status' , '=', 'FINISHED')
 			->count();
-		$status1 = DB::table('status_juri')
-			->where('name', '=', 'juri1')
-			->where('soal', '=', 1)
-			->first();
-		$status2 = DB::table('status_juri')
-			->where('name', '=', 'juri2')
-			->where('soal', '=', 1)
-			->first();
-		if(($status1->scored_photo == $jumlah_foto) && ($status2->scored_photo == $jumlah_foto))
+		if($finished_juri >= 2)
 		{
 			$hasil = DB::table('fotos')
-				->select(DB::raw("nama_file, (juri1 + juri2 + juri3) as total"))
-				->where('soal', '=', 1)
+				->select(DB::raw("nama_file, (juri1 + juri2 +juri3 + juri4 + juri5 + juri6 + juri7 + juri8) as total"))
+				->where('kategori', '=' , $kategori)
+				->where('soal', '=', $soal)
 				->orderBy('total', 'desc')
 				->get();
 
 			return view('skor')
-				->with('data', $hasil);
+				->with('data', $hasil)
+				->with('kategori', $kategori)
+				->with('soal', $soal);
 		}
 		else
 		{

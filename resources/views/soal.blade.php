@@ -27,8 +27,12 @@
         <div class="panel panel-red panel-transparent panel-full">
             <div class="panel-heading text-150">
                 <div class="row">
-                    <div class="col-md-4 text-left panel-title">Soal 1</div>
-                    <div class="col-md-8 text-right">{{$counter}}/{{$max}} </div>
+                    <div class="col-md-4 text-left panel-title">Soal {{$soal}}</div>
+                    @if($status == "UNFINISHED")
+                        <div class="col-md-8 text-right">Scored : {{$counter}}/{{$max}}</div>
+                    @else
+                        <div class="col-md-8 text-right">Display : {{$counter}}/{{$max}}</div>
+                    @endif
                 </div>
             </div>
             <div class="panel-body">
@@ -46,7 +50,7 @@
                         <!-- image display -->
                         <div class="col-lg-10 text-center">
                             <input type="hidden" name="nama_file" value="{{$source->nama_file}}" id="{{$source->nama_file}}">
-                            <img class="img-soal img-responsive center-block" src="{{$kategori}}/soal{{$soal}}/{{$source->nama_file}}">
+                            <img class="img-soal center-block" src="{{$kategori}}/soal{{$soal}}/{{$source->nama_file}}">
                         </div>
                         
                         <!-- next -->
@@ -61,8 +65,25 @@
                     <div class="row text-center text-white text-150" style="margin-top: 5px">
                                 <label class="control-label col-sm-1 col-sm-offset-5" for="nilai">Nilai : </label>
                                 <div class="col-sm-1">
+                                @if($score != 0)
+                                    <input class="form-control" type="number" name="nilai" id="nilai" min="1" max="10" step="1" value="{{$score}}" autofocus>
+                                @else
                                     <input class="form-control" type="number" name="nilai" id="nilai" min="1" max="10" step="1" value="" autofocus>
+                                @endif
                                 </div>
+                                @if($status == "FINISHED")
+                                    <div class="col-sm-1 col-sm-offset-3">
+                                        <a href="{{ url('/skor') }}">
+                                            <button type="button" class="btn btn-sm btn-danger">CEK SKOR AKHIR</button>
+                                        </a>
+                                    </div>
+                                @endif
+                                @if (session()->has('flash_notification.message'))
+                                    <div class="alert alert-{{ session('flash_notification.level') }} alert-custom">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        {!! session('flash_notification.message') !!}
+                                    </div>
+                                @endif
                     </div>
                 </form>   
             </div>

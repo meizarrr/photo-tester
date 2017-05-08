@@ -19,7 +19,7 @@ class PembagianController extends Controller
         	->count();
         if($result >= 2)
         {
-        	flash('Kategori dan Soal sudah dipilih 2 juri lain.');
+        	flash('Kategori dan Soal sudah dipilih 2 juri lain.', 'danger');
         	return redirect ('home');
         }
         else
@@ -34,7 +34,6 @@ class PembagianController extends Controller
 					]);
 	        }
 	        return redirect()->action('ScoringController@display');
-        }
-        
+        }    
     }
 }

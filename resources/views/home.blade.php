@@ -65,29 +65,40 @@
             <div class="panel-heading">
             <strong> Pilih Soal </strong>
             </div>
-            <div class="panel-body">
-                <form role="form" method="POST" action="{{ url('/pembagian') }}">
-                    {{ csrf_field() }}
+            <div class="panel-body text-center">
+                @if(Auth::user()->kategori == NULL)
+                    <form role="form" method="POST" action="{{ url('/pembagian') }}">
+                        {{ csrf_field() }}
+                        <img src="img/index.jpg" class="img-responsive" style="margin-bottom:20px">
+                        <div class="form-group">
+                            <label class="text-white">Kategori</label>
+                            <select class="form-control" name="kategori" id="kategori">
+                                <option value="Pelajar">Pelajar</option>
+                                <option id="Umum" value="Mahasiswa">Mahasiswa</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <button type="submit" class="btn btn-lg btn-danger" name="soal" id="1" value="1">Soal 1</button>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <button type="submit" class="btn btn-lg btn-danger" name="soal" id="2" value="2">Soal 2</button>
+                        </div>
+                    </form>
+                    @if (session()->has('flash_notification.message'))
+                        <div class="col-md-12">
+                            <div class="alert alert-{{ session('flash_notification.level') }} alert-custom" style="margin-top: 10px">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                {!! session('flash_notification.message') !!}
+                            </div>
+                        </div>
+                    @endif
+                @else
                     <img src="img/index.jpg" class="img-responsive" style="margin-bottom:20px">
-                    <div class="form-group">
-                        <label class="text-white">Kategori</label>
-                        <select class="form-control" name="kategori" id="kategori">
-                            <option value="Pelajar">Pelajar / Mahasiswa</option>
-                            <option id="Umum" value="Umum">Umum</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 text-center">
-                        <button type="submit" class="btn btn-lg btn-danger" name="soal" id="1" value="1">Soal 1</button>
-                    </div>
-                    <div class="col-md-6 text-center">
-                        <button type="submit" class="btn btn-lg btn-danger" name="soal" id="2" value="2">Soal 2</button>
-                    </div>
-                </form>
-                @if (session()->has('flash_notification.message'))
-                    <div class="alert alert-{{ session('flash_notification.level') }} alert-custom">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        {!! session('flash_notification.message') !!}
-                    </div>
+                    <h4 class="text-white text-center">Anda sudah memilih soal {{Auth::user()->soal}} kategori {{Auth::user()->kategori}}</h4>
+                    <a href="{{ url('/soal') }}">
+                        <button type="button" class="btn btn-lg btn-danger">Buka Soal</button>
+                    </a>
+                    
                 @endif
             </div>
         </div>
