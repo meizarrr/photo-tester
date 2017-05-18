@@ -50,7 +50,7 @@
                         <!-- image display -->
                         <div class="col-lg-10 text-center">
                             <input type="hidden" name="nama_file" value="{{$source->nama_file}}" id="{{$source->nama_file}}">
-                            <img class="img-soal center-block" src="{{$kategori}}/soal{{$soal}}/{{$source->nama_file}}">
+                            <img class="img-soal center-block" src="{{$kategori}}/soal{{$soal}}/{{$source->nama_file}}" alt="Loading...">
                         </div>
                         
                         <!-- next -->
@@ -66,9 +66,9 @@
                                 <label class="control-label col-sm-1 col-sm-offset-5" for="nilai">Nilai : </label>
                                 <div class="col-sm-1">
                                 @if($score != 0)
-                                    <input class="form-control" type="number" name="nilai" id="nilai" min="1" max="10" step="1" value="{{$score}}" autofocus>
+                                    <input class="form-control" type="number" name="nilai" id="nilai" min="0.01" max="10" step="0.01" value="{{$score}}" autofocus>
                                 @else
-                                    <input class="form-control" type="number" name="nilai" id="nilai" min="1" max="10" step="1" value="" autofocus>
+                                    <input class="form-control" type="number" name="nilai" id="nilai" min="0.01" max="10" step="0.01" value="" autofocus>
                                 @endif
                                 </div>
                                 @if($status == "FINISHED")

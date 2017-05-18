@@ -290,7 +290,7 @@ class ScoringController extends Controller
 
 	public function displayScore()
 	{
-
+		$nama_juri = Auth::user()->name;
 		$kategori = Auth::user()->kategori;
 		$soal = Auth::user()->soal;
 		$finished_juri = DB::table('users')
@@ -302,9 +302,11 @@ class ScoringController extends Controller
 		{
 			$hasil = DB::table('fotos')
 				->select(DB::raw("nama_file, (juri1 + juri2 +juri3 + juri4 + juri5 + juri6 + juri7 + juri8) as total"))
+				->addSelect($nama_juri. ' as lastScore')
 				->where('kategori', '=' , $kategori)
 				->where('soal', '=', $soal)
 				->orderBy('total', 'desc')
+				->take(15)
 				->get();
 
 			return view('skor')
@@ -317,4 +319,21 @@ class ScoringController extends Controller
 			return view('tunggujuri');
 		}		
 	}
+
+    public function update(Request $request)
+    {
+        $nama_juri = Auth::user()->name;
+		$kategori = Auth::user()->kategori;
+		$soal = Auth::user()->soal;
+		if($request->nilai != NULL)
+		{
+			DB::table('fotos')
+				->where('nama_file' , '=' , $request->nama_file)
+				->where('kategori' ,'=', $kategori)
+				->where('soal' , '=' , $soal)
+				->update([$nama_juri => $request->nilai]
+			);
+		}
+		return Redirect::to('skor');
+    }
 }

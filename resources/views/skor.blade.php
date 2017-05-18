@@ -88,7 +88,9 @@
                     <tr>
                         <th>{{$loop->index+1}}</th>
                         <th>
-                            <img id="myImg" src="{{$kategori}}/soal{{$soal}}/{{$item->nama_file}}" class="img-tabel thumbnail" alt="{{$item->nama_file}} Skor : {{$item->total}}">
+                            <a data-toggle="modal" data-id="{{$kategori}}/soal{{$soal}}/{{$item->nama_file}}" data-file="{{$item->nama_file}}" data-score="{{$item->lastScore}}" class="open-Modal" href="#">
+                                <img id="myImg" src="{{$kategori}}/soal{{$soal}}/{{$item->nama_file}}" class="img-tabel" alt="{{$item->nama_file}}">
+                            </a>
                         </th>
                         <th> {{$item->nama_file}} </th>
                         <th> {{$item->total}} </th>
@@ -98,6 +100,42 @@
             </table>
         </div>
     </div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+  <span class="close" id="tutup" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+  <img class="modal-content" id="img01">
+  <form role="form" method="POST" action="{{ url('/newscore') }}" class="form-horizontal" style="margin-top:5px">
+                {{ csrf_field() }}  
+        <input type="hidden" id="nama_file" value="" name="nama_file">
+        <div id="caption" class="col-sm-12 text-white text-center"></div>
+        <div class="col-sm-1 col-sm-offset-5">
+            <input class="form-control" id="nilai" type="number" name="nilai" id="nilai" min="0.01" max="10" step="0.01" value="" autofocus>
+        </div>
+        <div class="col-sm-1">
+            <button type="submit" class="btn btn-danger" name="update">Update</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    var modal = document.getElementById('myModal');
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+    var modalFile = document.getElementById("nama_file");
+    var modalNilai = document.getElementById("nilai");
+    $(document).on("click", ".open-Modal", function () {
+        var mySrc = $(this).data('id');
+        var myFile = $(this).data('file');
+        var myScore = $(this).data('score');
+            modal.style.display = "block";
+            modalImg.src = mySrc;
+            modalFile.value = myFile;
+            modalNilai.value = myScore;
+            captionText.innerHTML = myFile;
+    });
+
+</script>
 
 </body>
 </html>

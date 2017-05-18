@@ -80,7 +80,7 @@
                     {{ csrf_field() }} 
                         <div class="form-group" >
                             <label for="nomor_peserta" class="text-white">Nomor Peserta</label>
-                            <input type="text" name="nomor_peserta" id="nomor_peserta" class="form-control" placeholder="Nomor Peserta">
+                            <input type="number" min="1" step="1" name="nomor_peserta" id="nomor_peserta" class="form-control" placeholder="Nomor Peserta">
                         </div>
                         <div class="form-group">
                                 <label class="text-white">Kategori</label>
@@ -108,12 +108,7 @@
                             </div>
                         @endif
 
-                        @if (session()->has('flash_notification.message'))
-                            <div class="alert alert-{{ session('flash_notification.level') }} alert-custom">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                {!! session('flash_notification.message') !!}
-                            </div>
-                        @endif
+                        @include('flash::message')
                     </form>
 
 
@@ -128,5 +123,8 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+    <script>
+        $('#flash-overlay-modal').modal();
+    </script>
 </body>
 </html>

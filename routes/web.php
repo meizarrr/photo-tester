@@ -33,6 +33,7 @@ Route::get('/tunggujuri', function(){
 
 Route::get('/skor', 'ScoringController@displayScore');
 Route::post('/scoring', 'ScoringController@scoring');
+Route::post('/newscore', 'ScoringController@update');
 
 Route::get('/upload', function(){
 	return view('upload');
